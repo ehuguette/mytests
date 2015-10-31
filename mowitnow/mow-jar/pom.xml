@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.hug.calc</groupId>
 		<artifactId>mowitnow</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>mow-jar</artifactId>
 	<name>Mow-jar</name>
