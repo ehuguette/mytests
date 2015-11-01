@@ -26,196 +26,181 @@ import com.fr.mowitnow.mow.framework.exception.ClientMowException;
  */
 public class MowItNowTest {
 
-	/** The MowItNow tested class. */
-	private MowItNow mowItNow;
+    /** The MowItNow tested class. */
+    private MowItNow mowItNow;
 
-	/**
-	 * Set up before test.
-	 */
-	@Before
-	public final void setUp() {
-		mowItNow = new MowItNow();
+    /**
+     * Set up before test.
+     */
+    @Before
+    public final void setUp() {
+	mowItNow = new MowItNow();
+    }
+
+    /**
+     * Test for method {@link MowItNow#move(String)}.
+     *
+     * @throws ClientMowException
+     */
+    @Test
+    public void testActions() throws ClientMowException {
+	final String move = "5 5\n1 2 N\nGAGAGAGAA\n3 3 E\nAADAADADDA\n";
+	final List<MowPosition> resultPositions = new ArrayList<>();
+	final MowPosition resultPosition1 = new MowPosition(1, 3, EnumDirection.N);
+	resultPositions.add(resultPosition1);
+	final MowPosition resultPosition2 = new MowPosition(5, 1, EnumDirection.E);
+	resultPositions.add(resultPosition2);
+
+	final List<MowPosition> mowPositions = mowItNow.move(move);
+	Assert.assertNotNull(mowPositions);
+	Assert.assertEquals(2, mowPositions.size());
+
+	for (int index = 0; index < resultPositions.size(); index++) {
+	    Assert.assertEquals(resultPositions.get(index), mowPositions.get(index));
 	}
+    }
 
-	/**
-	 * Test for method {@link MowItNow#move(String)}.
-	 *
-	 * @throws ClientMowException
-	 */
-	@Test
-	public void testActions() throws ClientMowException {
-		final String move = "5 5\n1 2 N\nGAGAGAGAA\n3 3 E\nAADAADADDA\n";
-		final List<MowPosition> resultPositions = new ArrayList<>();
-		final MowPosition resultPosition1 = new MowPosition(1, 3,
-				EnumDirection.N);
-		resultPositions.add(resultPosition1);
-		final MowPosition resultPosition2 = new MowPosition(1, 5,
-				EnumDirection.E);
-		resultPositions.add(resultPosition2);
+    /**
+     * Test for method {@link MowItNow#move(String)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test
+    public final void testActionRotateNorthWest() throws ClientMowException {
+	final String move = "5 5\n1 0 N\nD\n";
+	final MowPosition resultPosition = new MowPosition(1, 0, EnumDirection.W);
 
-		final List<MowPosition> mowPositions = mowItNow.move(move);
-		Assert.assertNotNull(mowPositions);
-		Assert.assertEquals(2, mowPositions.size());
+	final List<MowPosition> mowPositions = mowItNow.move(move);
+	Assert.assertNotNull(mowPositions);
+	Assert.assertEquals(1, mowPositions.size());
+	Assert.assertEquals(resultPosition, mowPositions.get(0));
+    }
 
-		for (int index = 0; index < resultPositions.size(); index++) {
-			Assert.assertEquals(resultPositions.get(index),
-					mowPositions.get(index));
-		}
-	}
+    /**
+     * Test for method {@link MowItNow#move(String)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test
+    public final void testActionRotateWestSouth() throws ClientMowException {
+	final String move = "5 5\n1 0 W\nD\n";
+	final MowPosition resultPosition = new MowPosition(1, 0, EnumDirection.S);
 
-	/**
-	 * Test for method {@link MowItNow#move(String)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test
-	public final void testActionRotateNorthWest() throws ClientMowException {
-		final String move = "5 5\n1 0 N\nD\n";
-		final MowPosition resultPosition = new MowPosition(1, 0,
-				EnumDirection.W);
+	final List<MowPosition> mowPositions = mowItNow.move(move);
+	Assert.assertNotNull(mowPositions);
+	Assert.assertEquals(1, mowPositions.size());
+	Assert.assertEquals(resultPosition, mowPositions.get(0));
+    }
 
-		final List<MowPosition> mowPositions = mowItNow.move(move);
-		Assert.assertNotNull(mowPositions);
-		Assert.assertEquals(1, mowPositions.size());
-		Assert.assertEquals(resultPosition, mowPositions.get(0));
-	}
+    /**
+     * Test for method {@link MowItNow#move(String)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test
+    public final void testActionRotateNorthEst() throws ClientMowException {
+	final String move = "5 5\n0 0 N\nG\n";
+	final MowPosition resultPosition = new MowPosition(0, 0, EnumDirection.E);
 
-	/**
-	 * Test for method {@link MowItNow#move(String)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test
-	public final void testActionRotateWestSouth() throws ClientMowException {
-		final String move = "5 5\n1 0 W\nD\n";
-		final MowPosition resultPosition = new MowPosition(1, 0,
-				EnumDirection.S);
+	final List<MowPosition> mowPositions = mowItNow.move(move);
+	Assert.assertNotNull(mowPositions);
+	Assert.assertEquals(1, mowPositions.size());
+	Assert.assertEquals(resultPosition, mowPositions.get(0));
+    }
 
-		final List<MowPosition> mowPositions = mowItNow.move(move);
-		Assert.assertNotNull(mowPositions);
-		Assert.assertEquals(1, mowPositions.size());
-		Assert.assertEquals(resultPosition, mowPositions.get(0));
-	}
+    /**
+     * Test for method {@link MowItNow#move(String)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test
+    public final void testActionRotateWestNorth() throws ClientMowException {
+	final String move = "5 5\n1 0 W\nG\n";
+	final MowPosition resultPosition = new MowPosition(1, 0, EnumDirection.N);
 
-	/**
-	 * Test for method {@link MowItNow#move(String)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test
-	public final void testActionRotateNorthEst() throws ClientMowException {
-		final String move = "5 5\n0 0 N\nG\n";
-		final MowPosition resultPosition = new MowPosition(0, 0,
-				EnumDirection.E);
+	final List<MowPosition> mowPositions = mowItNow.move(move);
+	Assert.assertNotNull(mowPositions);
+	Assert.assertEquals(1, mowPositions.size());
+	Assert.assertEquals(resultPosition, mowPositions.get(0));
+    }
 
-		final List<MowPosition> mowPositions = mowItNow.move(move);
-		Assert.assertNotNull(mowPositions);
-		Assert.assertEquals(1, mowPositions.size());
-		Assert.assertEquals(resultPosition, mowPositions.get(0));
-	}
+    /**
+     * Test for method
+     * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test
+    public final void testActionRotateSouthEast() throws ClientMowException {
+	final MowField mowField = new MowField(new Coordinates(5, 5));
+	final MowParameters mowParameters = new MowParameters(0, 0, EnumDirection.S);
+	mowParameters.setMowField(mowField);
+	final Actions actions = new Actions();
+	actions.getList().add(EnumAction.D);
+	mowParameters.setActions(actions);
 
-	/**
-	 * Test for method {@link MowItNow#move(String)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test
-	public final void testActionRotateWestNorth() throws ClientMowException {
-		final String move = "5 5\n1 0 W\nG\n";
-		final MowPosition resultPosition = new MowPosition(1, 0,
-				EnumDirection.N);
+	final MowPosition resultPosition = new MowPosition(0, 0, EnumDirection.E);
 
-		final List<MowPosition> mowPositions = mowItNow.move(move);
-		Assert.assertNotNull(mowPositions);
-		Assert.assertEquals(1, mowPositions.size());
-		Assert.assertEquals(resultPosition, mowPositions.get(0));
-	}
+	final MowPosition mowPosition = mowItNow.actions(mowParameters, new MowActionObservable());
+	Assert.assertEquals(resultPosition, mowPosition);
+    }
 
-	/**
-	 * Test for method
-	 * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test
-	public final void testActionRotateSouthEast() throws ClientMowException {
-		final MowField mowField = new MowField(new Coordinates(5, 5));
-		final MowParameters mowParameters = new MowParameters(0, 0,
-				EnumDirection.S);
-		mowParameters.setMowField(mowField);
-		final Actions actions = new Actions();
-		actions.getList().add(EnumAction.D);
-		mowParameters.setActions(actions);
+    /**
+     * Test for method
+     * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testActionRotateWithNullFieldValue() throws ClientMowException {
+	final MowParameters mowParameters = new MowParameters(0, 0, EnumDirection.S);
+	final Actions actions = new Actions();
+	actions.getList().add(EnumAction.D);
+	mowParameters.setActions(actions);
 
-		final MowPosition resultPosition = new MowPosition(0, 0,
-				EnumDirection.E);
+	mowItNow.actions(mowParameters, null);
+    }
 
-		final MowPosition mowPosition = mowItNow.actions(mowParameters,
-				new MowActionObservable());
-		Assert.assertEquals(resultPosition, mowPosition);
-	}
+    /**
+     * Test for method
+     * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testActionRotateWithNullActionValue() throws ClientMowException {
+	final MowParameters mowParameters = new MowParameters(0, 0, EnumDirection.S);
+	mowParameters.setMowField(DataGenerator.generateDefaultMowField(5, 5));
 
-	/**
-	 * Test for method
-	 * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testActionRotateWithNullFieldValue() throws ClientMowException {
-		final MowParameters mowParameters = new MowParameters(0, 0,
-				EnumDirection.S);
-		final Actions actions = new Actions();
-		actions.getList().add(EnumAction.D);
-		mowParameters.setActions(actions);
+	mowItNow.actions(mowParameters, null);
+    }
 
-		mowItNow.actions(mowParameters, null);
-	}
+    /**
+     * Test for method
+     * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testActionRotateWithNullMowValue() throws ClientMowException {
+	mowItNow.actions(null, null);
+    }
 
-	/**
-	 * Test for method
-	 * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testActionRotateWithNullActionValue()
-			throws ClientMowException {
-		final MowParameters mowParameters = new MowParameters(0, 0,
-				EnumDirection.S);
-		mowParameters.setMowField(DataGenerator.generateDefaultMowField(5, 5));
+    /**
+     * Test for method
+     * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
+     * 
+     * @throws ClientMowException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testActionRotateWithNullObservableValue() throws ClientMowException {
+	final MowField mowField = new MowField(new Coordinates(5, 5));
+	final MowParameters mowParameters = new MowParameters(0, 0, EnumDirection.S);
+	mowParameters.setMowField(mowField);
+	final Actions actions = new Actions();
+	actions.getList().add(EnumAction.D);
+	mowParameters.setActions(actions);
 
-		mowItNow.actions(mowParameters, null);
-	}
-
-	/**
-	 * Test for method
-	 * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testActionRotateWithNullMowValue() throws ClientMowException {
-		mowItNow.actions(null, null);
-	}
-
-	/**
-	 * Test for method
-	 * {@link MowItNow#actions(MowParameters, MowActionObservable)}.
-	 * 
-	 * @throws ClientMowException
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testActionRotateWithNullObservableValue()
-			throws ClientMowException {
-		final MowField mowField = new MowField(new Coordinates(5, 5));
-		final MowParameters mowParameters = new MowParameters(0, 0,
-				EnumDirection.S);
-		mowParameters.setMowField(mowField);
-		final Actions actions = new Actions();
-		actions.getList().add(EnumAction.D);
-		mowParameters.setActions(actions);
-
-		mowItNow.actions(mowParameters, null);
-	}
+	mowItNow.actions(mowParameters, null);
+    }
 }
