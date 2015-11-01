@@ -4,7 +4,7 @@ import com.fr.mowitnow.mow.dto.Coordinates;
 import com.fr.mowitnow.mow.dto.MowField;
 
 /**
- * Test class to generate Object
+ * Test class to generate Object.
  * 
  * @author ehuguette
  * @since 1.0
