@@ -24,7 +24,16 @@ public class MowItNow {
 
 	/** logger class. */
 	private static final Logger LOG = LoggerFactory
-			.getLogger(ParameterHelper.class);
+			.getLogger(ParameterOperation.class);
+
+	private ParameterOperation parameterOperation;
+
+	/**
+	 * Constructor.
+	 */
+	public MowItNow() {
+		parameterOperation = new ParameterOperation();
+	}
 
 	/**
 	 * Mows actions parameters to apply.
@@ -35,14 +44,16 @@ public class MowItNow {
 	 * @throws ClientMowException
 	 *             Raised if the message format is invalid
 	 */
-	public List<MowPosition> move(String moveMessage) throws ClientMowException {
+	public List<MowPosition> move(String moveMessage)
+			throws ClientMowException {
 		StringBuilder msgLog = new StringBuilder("Initial message - {");
 		msgLog.append(moveMessage).append("}");
 		LOG.info(msgLog.toString());
 
 		List<MowPosition> mowPositions = new ArrayList<>();
 
-		MowsParameters parameters = ParameterHelper.getParamaters(moveMessage);
+		MowsParameters parameters = parameterOperation
+				.getParamaters(moveMessage);
 
 		MowPosition mowPosition = null;
 		for (MowParameters mowParameters : parameters.getList()) {
@@ -74,15 +85,17 @@ public class MowItNow {
 			StringBuilder msgError = new StringBuilder(
 					"Parameters should not be null - ");
 			msgError.append("fieldParameters is null : ");
-			msgError.append(mowParameters == null ? true : mowParameters
-					.getMowField() == null);
+			msgError.append(mowParameters == null
+					? true
+					: mowParameters.getMowField() == null);
 			msgError.append(" - ");
 			msgError.append("actionParameters is null : ");
-			msgError.append(mowParameters == null ? true : mowParameters
-					.getActions() == null);
+			msgError.append(mowParameters == null
+					? true
+					: mowParameters.getActions() == null);
 			msgError.append(" - ");
-			msgError.append("mowParameters is null : ").append(
-					mowParameters == null);
+			msgError.append("mowParameters is null : ")
+					.append(mowParameters == null);
 			LOG.error(msgError.toString());
 			throw new IllegalArgumentException(msgError.toString());
 		} else {
@@ -96,15 +109,15 @@ public class MowItNow {
 			Actions actions = mowParameters.getActions();
 			StringBuilder msg = null;
 			for (EnumAction enumAction : actions.getList()) {
-				mowAction = MowActionCache.getInstance().getMowAction(
-						enumAction);
+				mowAction = MowActionCache.getInstance()
+						.getMowAction(enumAction);
 				mowAction.executeAction(mowFieldParameters);
 				msg = new StringBuilder("Movement");
 				msg.append(" - Action = ").append(enumAction);
 				msg.append(" - X = ").append(movePosition.getX());
 				msg.append(" - Y = ").append(movePosition.getY());
-				msg.append(" - Direction = ").append(
-						movePosition.getDirection());
+				msg.append(" - Direction = ")
+						.append(movePosition.getDirection());
 				LOG.debug(msg.toString());
 			}
 		}

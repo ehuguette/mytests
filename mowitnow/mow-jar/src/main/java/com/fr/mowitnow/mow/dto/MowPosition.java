@@ -14,6 +14,8 @@ public class MowPosition {
 	private Coordinates coordinates;
 	/** The mow orientation. */
 	private EnumDirection direction;
+	/** The mow action generic operations. */
+	private MowActionOperation mowActionOperation;
 
 	/**
 	 * Constructor.
@@ -28,6 +30,7 @@ public class MowPosition {
 	public MowPosition(Integer xi, Integer yi, EnumDirection direction) {
 		this.coordinates = new Coordinates(xi, yi);
 		this.direction = direction;
+		this.mowActionOperation = new MowActionOperation();
 	}
 
 	/**
@@ -58,14 +61,14 @@ public class MowPosition {
 	 * Turn the mow to the next right direction.
 	 */
 	public void turnRight() {
-		this.direction = ActionHelper.next(this.direction);
+		this.direction = mowActionOperation.next(this.direction);
 	}
 
 	/**
 	 * Turn the mow to the next left direction.
 	 */
 	public void turnLeft() {
-		this.direction = ActionHelper.previous(this.direction);
+		this.direction = mowActionOperation.previous(this.direction);
 	}
 
 	/**
@@ -75,9 +78,9 @@ public class MowPosition {
 	 *            The mow field
 	 */
 	public void moveOneStep(MowField mowField) {
-		Coordinates coordinates = ActionHelper.moveOneStep(this.coordinates,
-				direction);
-		if (ActionHelper.isInFieldCoordinates(mowField, coordinates)) {
+		Coordinates coordinates = mowActionOperation
+				.moveOneStep(this.coordinates, direction);
+		if (mowActionOperation.isInFieldCoordinates(mowField, coordinates)) {
 			this.coordinates = coordinates;
 		}
 	}

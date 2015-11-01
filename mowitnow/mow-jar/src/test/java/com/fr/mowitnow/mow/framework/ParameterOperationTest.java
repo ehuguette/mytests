@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.fr.mowitnow.mow.DataGenerator;
@@ -18,15 +19,26 @@ import com.fr.mowitnow.mow.dto.MowsParameters;
 import com.fr.mowitnow.mow.exceptions.ClientMowException;
 
 /**
- * {@link ParameterHelper} class test.
+ * {@link ParameterOperation} class test.
  * 
  * @author ehuguette
  * @since 1.0
  */
-public class ParameterHelperTest {
+public class ParameterOperationTest {
+
+	/** The ParameterOperation tested class. */
+	private ParameterOperation parameterOperation;
 
 	/**
-	 * Test for method {@link ParameterHelper#getParamaters(String)}.
+	 * Set up before test.
+	 */
+	@Before
+	public final void setUp() {
+		parameterOperation = new ParameterOperation();
+	}
+
+	/**
+	 * Test for method {@link ParameterOperation#getParamaters(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -48,84 +60,85 @@ public class ParameterHelperTest {
 
 		resultsPositions.getList().add(resultParameters);
 
-		MowsParameters parameters = ParameterHelper.getParamaters(move);
+		MowsParameters parameters = parameterOperation.getParamaters(move);
 		Assert.assertEquals(resultsPositions, parameters);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
 	public void testCheckFormatOk() throws ClientMowException {
 		String move = "5 5\n1 0 N\nD\n";
-		boolean chekFormat = ParameterHelper.checkParametersFormat(move);
+		boolean chekFormat = parameterOperation.checkParametersFormat(move);
 		Assert.assertEquals(Boolean.TRUE, chekFormat);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
 	public void testCheckFormatForTwoMowOk() throws ClientMowException {
 		String move = "5 5\n1 0 N\nD\n5 0 S\nD\n";
-		boolean chekFormat = ParameterHelper.checkParametersFormat(move);
+		boolean chekFormat = parameterOperation.checkParametersFormat(move);
 		Assert.assertEquals(Boolean.TRUE, chekFormat);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
 	public void testCheckFormatKo() throws ClientMowException {
 		String move = "5 5\n1 0 N\n\nD\n";
-		boolean chekFormat = ParameterHelper.checkParametersFormat(move);
+		boolean chekFormat = parameterOperation.checkParametersFormat(move);
 		Assert.assertEquals(Boolean.FALSE, chekFormat);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
 	public void testCheckFormatWithoutActionKo() throws ClientMowException {
 		String move = "5 5\n1 0 N\n\n";
-		boolean chekFormat = ParameterHelper.checkParametersFormat(move);
+		boolean chekFormat = parameterOperation.checkParametersFormat(move);
 		Assert.assertEquals(Boolean.FALSE, chekFormat);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
-	public void testCheckFormatWithLimitFieldOnlyKo() throws ClientMowException {
+	public void testCheckFormatWithLimitFieldOnlyKo()
+			throws ClientMowException {
 		String move = "5 5\n";
-		boolean chekFormat = ParameterHelper.checkParametersFormat(move);
+		boolean chekFormat = parameterOperation.checkParametersFormat(move);
 		Assert.assertEquals(Boolean.FALSE, chekFormat);
 	}
 
 	/**
-	 * Test for method {@link ParameterHelper#checkParametersFormat(String)}.
+	 * Test for method {@link ParameterOperation#checkParametersFormat(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testCheckNPE() throws ClientMowException {
 		String move = null;
-		ParameterHelper.checkParametersFormat(move);
+		parameterOperation.checkParametersFormat(move);
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractLimitTopRightCoordinates(String)}.
+	 * {@link ParameterOperation#extractLimitTopRightCoordinates(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -134,14 +147,14 @@ public class ParameterHelperTest {
 			throws ClientMowException {
 		Coordinates resultCoordinates = new Coordinates(5, 5);
 		String moveMessage = "5 5\n1 0 N\n\n";
-		Coordinates extractCoordinates = ParameterHelper
+		Coordinates extractCoordinates = parameterOperation
 				.extractLimitTopRightCoordinates(moveMessage);
 		Assert.assertEquals(resultCoordinates, extractCoordinates);
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractLimitTopRightCoordinates(String)}.
+	 * {@link ParameterOperation#extractLimitTopRightCoordinates(String)}.
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -150,20 +163,21 @@ public class ParameterHelperTest {
 			throws ClientMowException {
 
 		String moveMessage = "5 \n1 0 N\n\n";
-		ParameterHelper.extractLimitTopRightCoordinates(moveMessage);
+		parameterOperation.extractLimitTopRightCoordinates(moveMessage);
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractMowsParameters(String, String, MowField)}.
+	 * {@link ParameterOperation#extractMowsParameters(String, String, MowField)}
+	 * .
 	 * 
 	 * @throws ClientMowException
 	 */
 	@Test
 	public void testExtractMowsParametersOk() throws ClientMowException {
 
-		final MowField resultField = DataGenerator
-				.generateDefaultMowField(5, 5);
+		final MowField resultField = DataGenerator.generateDefaultMowField(5,
+				5);
 		final MowsParameters resultMowsParameters = new MowsParameters();
 		final MowParameters resultMowParameters1 = new MowParameters(1, 0,
 				EnumDirection.N);
@@ -184,14 +198,15 @@ public class ParameterHelperTest {
 		resultMowsParameters.getList().add(resultMowParameters2);
 
 		final String moveMessage = "5 5\n1 0 N\nDA\n5 0 S\nGA\n";
-		MowsParameters mowParameters = ParameterHelper.extractMowsParameters(
+		MowsParameters mowParameters = parameterOperation.extractMowsParameters(
 				moveMessage, DataGenerator.generateDefaultMowField(5, 5));
 		Assert.assertEquals(resultMowsParameters, mowParameters);
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractMowParameters(String, String, MowField)}.
+	 * {@link ParameterOperation#extractMowParameters(String, String, MowField)}
+	 * .
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -202,12 +217,12 @@ public class ParameterHelperTest {
 		final Actions actions = new Actions();
 		actions.getList().add(EnumAction.D);
 		resultParameters.setActions(actions);
-		resultParameters.setMowField(DataGenerator
-				.generateDefaultMowField(5, 5));
+		resultParameters
+				.setMowField(DataGenerator.generateDefaultMowField(5, 5));
 
 		final String mowPosition = "1 0 N";
 		final String mowAction = "D";
-		final MowParameters mowParameters = ParameterHelper
+		final MowParameters mowParameters = parameterOperation
 				.extractMowParameters(mowPosition, mowAction,
 						DataGenerator.generateDefaultMowField(5, 5));
 		Assert.assertEquals(resultParameters, mowParameters);
@@ -215,7 +230,8 @@ public class ParameterHelperTest {
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractMowsParameters(String, String, MowField)}.
+	 * {@link ParameterOperation#extractMowsParameters(String, String, MowField)}
+	 * .
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -224,13 +240,14 @@ public class ParameterHelperTest {
 			throws ClientMowException {
 
 		final String moveMessage = "1 0 \nD\n";
-		ParameterHelper.extractMowsParameters(moveMessage,
+		parameterOperation.extractMowsParameters(moveMessage,
 				DataGenerator.generateDefaultMowField(5, 5));
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractMowsParameters(String, String, MowField)}.
+	 * {@link ParameterOperation#extractMowsParameters(String, String, MowField)}
+	 * .
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -239,13 +256,14 @@ public class ParameterHelperTest {
 			throws ClientMowException {
 
 		final String moveMessage = "1 0 N\n\n";
-		ParameterHelper.extractMowsParameters(moveMessage,
+		parameterOperation.extractMowsParameters(moveMessage,
 				DataGenerator.generateDefaultMowField(5, 5));
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractMowsParameters(String, String, MowField)}.
+	 * {@link ParameterOperation#extractMowsParameters(String, String, MowField)}
+	 * .
 	 * 
 	 * @throws ClientMowException
 	 */
@@ -254,12 +272,12 @@ public class ParameterHelperTest {
 			throws ClientMowException {
 
 		final String moveMessage = "1 0 N\nD\n";
-		ParameterHelper.extractMowsParameters(moveMessage, null);
+		parameterOperation.extractMowsParameters(moveMessage, null);
 	}
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractPatternMatcher(String, String)}.
+	 * {@link ParameterOperation#extractPatternMatcher(String, String)}.
 	 */
 	@Test
 	public void testExtractPatternMatcherFieldOk() {
@@ -267,7 +285,7 @@ public class ParameterHelperTest {
 		resultParams.add("5 5");
 
 		final String moveMessage = "5 5\n1 0 N\n\n";
-		final List<String> extractParams = ParameterHelper
+		final List<String> extractParams = parameterOperation
 				.extractPatternMatcher(moveMessage,
 						Constant.MSG_LIMIT_FIELD_REGEX);
 		Assert.assertEquals(resultParams, extractParams);
@@ -275,7 +293,7 @@ public class ParameterHelperTest {
 
 	/**
 	 * Test for method
-	 * {@link ParameterHelper#extractPatternMatcher(String, String)}.
+	 * {@link ParameterOperation#extractPatternMatcher(String, String)}.
 	 */
 	@Test
 	public void testExtractPatternMatcherMowOk() {
@@ -283,7 +301,7 @@ public class ParameterHelperTest {
 		resultParams.add("1 0 N\nD\n");
 
 		final String moveMessage = "5 5\n1 0 N\nD\n";
-		final List<String> extractParams = ParameterHelper
+		final List<String> extractParams = parameterOperation
 				.extractPatternMatcher(moveMessage,
 						Constant.MSG_MOW_PARAMS_REGEX);
 		Assert.assertEquals(resultParams, extractParams);

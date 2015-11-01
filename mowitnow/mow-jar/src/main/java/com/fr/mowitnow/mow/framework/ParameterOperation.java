@@ -24,16 +24,16 @@ import com.fr.mowitnow.mow.exceptions.ClientMowException;
  * @author ehuguette
  * @since 1.0
  */
-public final class ParameterHelper {
+public final class ParameterOperation {
 
 	/** logger class. */
 	private static final Logger LOG = LoggerFactory
-			.getLogger(ParameterHelper.class);
+			.getLogger(ParameterOperation.class);
 
 	/**
 	 * The constructor.
 	 */
-	private ParameterHelper() {
+	public ParameterOperation() {
 
 	}
 
@@ -46,12 +46,13 @@ public final class ParameterHelper {
 	 * @throws ClientMowException
 	 *             Raised if the message format is invalid
 	 */
-	public static MowsParameters getParamaters(String message)
+	public MowsParameters getParamaters(String message)
 			throws ClientMowException {
 		MowsParameters parameters = null;
 		boolean isValidFormat = checkParametersFormat(message);
 		if (isValidFormat) {
-			Coordinates limitTopRightCoordinates = extractLimitTopRightCoordinates(message);
+			Coordinates limitTopRightCoordinates = extractLimitTopRightCoordinates(
+					message);
 			MowField mowField = new MowField(limitTopRightCoordinates);
 			parameters = extractMowsParameters(message, mowField);
 		} else {
@@ -77,7 +78,7 @@ public final class ParameterHelper {
 	 * @throws ClientMowException
 	 *             Raised if the message format is invalid
 	 */
-	protected static boolean checkParametersFormat(String message)
+	protected boolean checkParametersFormat(String message)
 			throws ClientMowException {
 		boolean result = Boolean.FALSE;
 		if (message.matches(Constant.MSG_FORMAT_REGEX)) {
@@ -95,7 +96,7 @@ public final class ParameterHelper {
 	 * @throws ClientMowException
 	 *             Raised if the message format is invalid
 	 */
-	protected static Coordinates extractLimitTopRightCoordinates(String message)
+	protected Coordinates extractLimitTopRightCoordinates(String message)
 			throws ClientMowException {
 		Coordinates coordinates = null;
 
@@ -133,7 +134,7 @@ public final class ParameterHelper {
 	 * @throws ClientMowException
 	 *             Raised if the message format is invalid
 	 */
-	protected static MowsParameters extractMowsParameters(String message,
+	protected MowsParameters extractMowsParameters(String message,
 			MowField mowField) throws ClientMowException {
 		MowsParameters mowsParameters = new MowsParameters();
 		List<String> mowPositionParameters = null;
@@ -157,16 +158,15 @@ public final class ParameterHelper {
 				mowActionParameters = extractPatternMatcher(partMessage,
 						Constant.MSG_MOW_ACTION_REGEX);
 
-				if (mowPositionParameters.size() > 0
-						&& mowPositionParameters.size() == mowActionParameters
-								.size()) {
+				if (mowPositionParameters.size() > 0 && mowPositionParameters
+						.size() == mowActionParameters.size()) {
 					for (int mowIndex = 0; mowIndex < mowPositionParameters
-							.size() && mowIndex < mowActionParameters.size(); mowIndex++) {
-						mowsParameters.getList().add(
-								extractMowParameters(
-										mowPositionParameters.get(mowIndex),
-										mowActionParameters.get(mowIndex),
-										mowField));
+							.size()
+							&& mowIndex < mowActionParameters
+									.size(); mowIndex++) {
+						mowsParameters.getList().add(extractMowParameters(
+								mowPositionParameters.get(mowIndex),
+								mowActionParameters.get(mowIndex), mowField));
 					}
 
 				} else {
@@ -189,8 +189,8 @@ public final class ParameterHelper {
 						msgError.append(" number of mow position : ")
 								.append(mowPositionParameters.size())
 								.append(" -");
-						msgError.append(" number of mow action : ").append(
-								mowActionParameters.size());
+						msgError.append(" number of mow action : ")
+								.append(mowActionParameters.size());
 					}
 
 					LOG.error(msgError.toString());
@@ -222,7 +222,7 @@ public final class ParameterHelper {
 	 *            The mow field
 	 * @return {@link MowParameters} The mow parameters
 	 */
-	protected static MowParameters extractMowParameters(String mowPosition,
+	protected MowParameters extractMowParameters(String mowPosition,
 			String mowAction, MowField mowField) {
 		MowParameters mowParameters = null;
 
@@ -234,10 +234,10 @@ public final class ParameterHelper {
 		mowParameters.setMowField(mowField);
 
 		Actions actions = new Actions();
-		for (int indexAction = 0; indexAction < mowAction.length(); indexAction++) {
-			actions.getList().add(
-					EnumAction.valueOf(String.valueOf(mowAction
-							.charAt(indexAction))));
+		for (int indexAction = 0; indexAction < mowAction
+				.length(); indexAction++) {
+			actions.getList().add(EnumAction
+					.valueOf(String.valueOf(mowAction.charAt(indexAction))));
 		}
 		mowParameters.setActions(actions);
 
@@ -253,8 +253,7 @@ public final class ParameterHelper {
 	 *            The regex to apply for parsing
 	 * @return {@link List}<String>
 	 */
-	protected static List<String> extractPatternMatcher(String message,
-			String regex) {
+	protected List<String> extractPatternMatcher(String message, String regex) {
 		List<String> patterns = new ArrayList<>();
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(message);
